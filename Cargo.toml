@@ -1,0 +1,13 @@
+[package]
+name = "s_app_dir"
+version = "0.0.0"
+authors = ["siphilia <siphilia.rn@gmail.com>"]
+license = "MIT"
+
+[features]
+default = []
+check = ["clippy", "sorty"]
+
+[dependencies]
+clippy = { version = "*", optional = true }
+sorty = { git = "https://github.com/Wafflespeanut/rust-sorty", optional = true }
