@@ -48,7 +48,7 @@ impl AppDir {
         AppDir { app_name: app_name.to_string() }
     }
 
-    fn get_xdg_dir_with_fallback<P>(&self, key: &str, fallback: P) -> Option<path::PathBuf>
+    fn xdg_dir_with_fallback<P>(&self, key: &str, fallback: P) -> Option<path::PathBuf>
         where P: AsRef<path::Path>
     {
         result_to_option(env::var(key))
@@ -56,27 +56,27 @@ impl AppDir {
             .or(env::home_dir().map(|p| p.join(fallback)))
     }
 
-    pub fn get_xdg_dir(&self, xdg: XdgDir) -> Option<path::PathBuf> {
+    pub fn xdg_dir(&self, xdg: XdgDir) -> Option<path::PathBuf> {
         let xdg_dir = match xdg {
-            XdgDir::Data => self.get_xdg_dir_with_fallback("XDG_DATA_HOME", ".local/share"),
-            XdgDir::Config => self.get_xdg_dir_with_fallback("XDG_CONFIG_HOME", ".config"),
-            XdgDir::Cache => self.get_xdg_dir_with_fallback("XDG_CACHE_HOME", ".cache"),
+            XdgDir::Data => self.xdg_dir_with_fallback("XDG_DATA_HOME", ".local/share"),
+            XdgDir::Config => self.xdg_dir_with_fallback("XDG_CONFIG_HOME", ".config"),
+            XdgDir::Cache => self.xdg_dir_with_fallback("XDG_CACHE_HOME", ".cache"),
         };
         xdg_dir.map(|base| path::PathBuf::new().join(&base).join(&self.app_name))
     }
 
     #[cfg(unix)]
-    pub fn get_user_data_dir(&self) -> Option<path::PathBuf> {
+    pub fn user_data_dir(&self) -> Option<path::PathBuf> {
         env::home_dir().map(|p| p.join(".".to_string() + &self.app_name))
     }
 
     #[cfg(windows)]
-    pub fn get_user_data_dir(&self) -> Option<path::PathBuf> {
+    pub fn user_data_dir(&self) -> Option<path::PathBuf> {
         result_to_option(env::var("APPDATA"))
             .map(|v| Some(path::PathBuf::new().join(v).join(&self.app_name)))
     }
 
-    pub fn get_temp_dir(&self) -> path::PathBuf {
+    pub fn temp_dir(&self) -> path::PathBuf {
         env::temp_dir().join(&self.app_name)
     }
 }
@@ -106,7 +106,7 @@ mod tests {
     fn default_data_home() {
         env::remove_var("XDG_DATA_HOME");
         let expect = env::home_dir().map(|p| p.join(".local/share").join(APP_NAME));
-        let value = ::AppDir::new(APP_NAME).get_xdg_dir(::XdgDir::Data);
+        let value = ::AppDir::new(APP_NAME).xdg_dir(::XdgDir::Data);
         assert_eq!(expect, value);
     }
 
@@ -117,7 +117,7 @@ mod tests {
         env::set_var("XDG_DATA_HOME", &xdg_data_home);
 
         let expect = Some(xdg_data_home.join(APP_NAME));
-        let value = ::AppDir::new(APP_NAME).get_xdg_dir(::XdgDir::Data);
+        let value = ::AppDir::new(APP_NAME).xdg_dir(::XdgDir::Data);
         assert_eq!(expect, value);
     }
 
@@ -126,7 +126,7 @@ mod tests {
     fn default_config_home() {
         env::remove_var("XDG_CONFIG_HOME");
         let expect = env::home_dir().map(|p| p.join(".config").join(APP_NAME));
-        let value = ::AppDir::new(APP_NAME).get_xdg_dir(::XdgDir::Config);
+        let value = ::AppDir::new(APP_NAME).xdg_dir(::XdgDir::Config);
         assert_eq!(expect, value);
     }
 
@@ -137,7 +137,7 @@ mod tests {
         env::set_var("XDG_CONFIG_HOME", &xdg_config_home);
 
         let expect = Some(xdg_config_home.join(APP_NAME));
-        let value = ::AppDir::new(APP_NAME).get_xdg_dir(::XdgDir::Config);
+        let value = ::AppDir::new(APP_NAME).xdg_dir(::XdgDir::Config);
         assert_eq!(expect, value);
     }
 
@@ -146,7 +146,7 @@ mod tests {
     fn default_cache_home() {
         env::remove_var("XDG_CACHE_HOME");
         let expect = env::home_dir().map(|p| p.join(".cache").join(APP_NAME));
-        let value = ::AppDir::new(APP_NAME).get_xdg_dir(::XdgDir::Cache);
+        let value = ::AppDir::new(APP_NAME).xdg_dir(::XdgDir::Cache);
         assert_eq!(expect, value);
     }
 
@@ -157,14 +157,14 @@ mod tests {
         env::set_var("XDG_CACHE_HOME", &xdg_cache_home);
 
         let expect = Some(xdg_cache_home.join(APP_NAME));
-        let value = ::AppDir::new(APP_NAME).get_xdg_dir(::XdgDir::Cache);
+        let value = ::AppDir::new(APP_NAME).xdg_dir(::XdgDir::Cache);
         assert_eq!(expect, value);
     }
 
     /// Return `None` or `$HOME/.app_name`.
     #[test]
     fn user_data_dir() {
-        let value = ::AppDir::new(APP_NAME).get_user_data_dir();
+        let value = ::AppDir::new(APP_NAME).user_data_dir();
         let expect = env::home_dir().map(|p| p.join(".".to_string() + APP_NAME));
         assert_eq!(expect, value);
     }
@@ -172,7 +172,7 @@ mod tests {
     /// Return path based `std::env::temp_dir()`.
     #[test]
     fn temp_dir() {
-        let value = ::AppDir::new(APP_NAME).get_temp_dir();
+        let value = ::AppDir::new(APP_NAME).temp_dir();
         let expect = env::temp_dir().join(APP_NAME);
         assert_eq!(expect, value);
     }
