@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["XdgDir",""]],"struct":[["AppDir",""]]});
