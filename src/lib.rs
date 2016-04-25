@@ -20,6 +20,33 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+//! # s_app_dir
+//!
+//! ## Usage
+//!
+//! Cargo.toml:
+//!
+//! ```toml
+//! [package]
+//! ...
+//!
+//! [dependencies]
+//! s_app_dir = "*" # or semantic versioning
+//! ```
+//!
+//! main.rc:
+//!
+//! ```rust
+//! extern crate s_app_dir;
+//!
+//! use s_app_dir::{AppDir, XdgDir};
+//!
+//! fn main() {
+//!     let app_dir = AppDir::new("foo-bar-app");
+//!     println!("{:?}", app_dir.xdg_dir(XdgDir::Config));
+//! }
+//! ```
+
 #![cfg_attr(any(feature="clippy", feature="sorty"), feature(plugin))]
 
 #![cfg_attr(feature="clippy", plugin(clippy))]
