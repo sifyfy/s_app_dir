@@ -1,0 +1,12 @@
+target
+Cargo.lock
+.DS_Store
+.directory
+Thumbs.db
+core
+*.swp
+*~
+*.bak
+*.log
+*.bk
+.lock
