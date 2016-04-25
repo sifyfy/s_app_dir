@@ -3,6 +3,11 @@ name = "s_app_dir"
 version = "0.0.0"
 authors = ["siphilia <siphilia.rn@gmail.com>"]
 license = "MIT"
+description = "A library for getting configuration directory and temporary directory path with app name."
+readme = "README.md"
+documentation = "http://siphilia.github.io/s_app_dir/doc/s_app_dir"
+homepage = "https://github.com/siphilia/s_app_dir"
+repository = "https://github.com/siphilia/s_app_dir"
 
 [features]
 default = []
