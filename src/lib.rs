@@ -47,12 +47,12 @@
 //! }
 //! ```
 
-#![cfg_attr(any(feature="clippy", feature="sorty"), feature(plugin))]
+// #![cfg_attr(any(feature="clippy", feature="sorty"), feature(plugin))]
 
-#![cfg_attr(feature="clippy", plugin(clippy))]
+// #![cfg_attr(feature="clippy", plugin(clippy))]
 
-#![cfg_attr(feature="sorty", plugin(sorty))]
-#![cfg_attr(feature="sorty", warn(unsorted_declarations))]
+// #![cfg_attr(feature="sorty", plugin(sorty))]
+// #![cfg_attr(feature="sorty", warn(unsorted_declarations))]
 
 use std::env;
 use std::fmt::{Display, Error, Formatter};

@@ -11,8 +11,8 @@ repository = "https://github.com/siphilia/s_app_dir"
 
 [features]
 default = []
-check = ["clippy", "sorty"]
+# check = ["clippy", "sorty"]
 
 [dependencies]
-clippy = { version = "*", optional = true }
-sorty = { git = "https://github.com/Wafflespeanut/rust-sorty", optional = true }
+# clippy = { version = "*", optional = true }
+# sorty = { git = "https://github.com/Wafflespeanut/rust-sorty", optional = true }
